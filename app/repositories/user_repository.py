@@ -13,7 +13,7 @@ def row_to_user(row: dict) -> User:
 
 def find_by_username(username: str) -> User | None:
     row = execute("SELECT id, name, username, password_hash FROM users WHERE username = %s",
-                 (username,), fetch="one",)
+                  (username,), fetch="one",)
 
     if row is None:
         return None
@@ -22,7 +22,7 @@ def find_by_username(username: str) -> User | None:
 
 
 def find_by_id(user_id: int) -> User | None:
-    row = execute("SELECT id, name, username, password_hash FROM users WHERE id = %s", (user_id,), fetch="one",)
+    row = execute("SELECT id, name, username, password_hash FROM users WHERE id = %s",(user_id,), fetch="one",)
 
     if row is None:
         return None
