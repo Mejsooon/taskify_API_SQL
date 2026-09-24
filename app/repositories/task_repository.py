@@ -14,17 +14,7 @@ def row_to_task(row: dict) -> Task:
 
 
 def save(task: Task) -> Task:
-    new_id = execute(
-        """
-        INSERT INTO tasks (
-            user_id,
-            difficulty,
-            description,
-            additional_notes,
-            status
-        )
-        VALUES (%s, %s, %s, %s, %s)
-        """,
+    new_id = execute("INSERT INTO tasks (user_id, difficulty, description, additional_notes, status) VALUES (%s, %s, %s, %s, %s)",
         (
             task.user_id,
             task.difficulty,
@@ -48,43 +38,14 @@ def find_by_user_id_and_status(
     user_id: int,
     status: str,
 ) -> list[Task]:
-    rows = execute(
-        """
-        SELECT
-            id,
-            user_id,
-            difficulty,
-            description,
-            additional_notes,
-            status
-        FROM tasks
-        WHERE user_id = %s
-          AND status = %s
-        ORDER BY id
-        """,
-        (user_id, status),
-        fetch="all",
-    )
+    rows = execute("SELECT id, user_id, difficulty, description, additional_notes, status FROM tasks WHERE user_id = %s AND status = %s ORDER BY id",
+                   (user_id, status), fetch="all",)
 
     return [row_to_task(row) for row in rows]
 
 
 def find_by_id(task_id: int) -> Task | None:
-    row = execute(
-        """
-        SELECT
-            id,
-            user_id,
-            difficulty,
-            description,
-            additional_notes,
-            status
-        FROM tasks
-        WHERE id = %s
-        """,
-        (task_id,),
-        fetch="one",
-    )
+    row = execute("SELECT id, user_id, difficulty, description, additional_notes, status FROM tasks WHERE id = %s", (task_id,), fetch="one",)
 
     if row is None:
         return None
@@ -93,11 +54,4 @@ def find_by_id(task_id: int) -> Task | None:
 
 
 def mark_as_completed(task_id: int) -> None:
-    execute(
-        """
-        UPDATE tasks
-        SET status = 'completed'
-        WHERE id = %s
-        """,
-        (task_id,),
-    )
+    execute("UPDATE tasks SET status = 'completed' WHERE id = %s",(task_id,),)
