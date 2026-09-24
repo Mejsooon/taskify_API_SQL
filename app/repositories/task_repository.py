@@ -34,10 +34,7 @@ def save(task: Task) -> Task:
     )
 
 
-def find_by_user_id_and_status(
-    user_id: int,
-    status: str,
-) -> list[Task]:
+def find_by_user_id_and_status(user_id: int, status: str, ) -> list[Task]:
     rows = execute("SELECT id, user_id, difficulty, description, additional_notes, status FROM tasks WHERE user_id = %s AND status = %s ORDER BY id",
                    (user_id, status), fetch="all",)
 
