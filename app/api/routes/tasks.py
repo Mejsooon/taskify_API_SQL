@@ -41,10 +41,7 @@ def get_completed_tasks(user_id: int):
     return task_service.find_completed_tasks(user_id)
 
 
-@router.post(
-    "/{task_id}/complete",
-    response_model=TaskResponse,
-)
+@router.post("/{task_id}/complete", response_model=TaskResponse,)
 def complete_task(
     task_id: int,
     user_id: int,
