@@ -3,17 +3,24 @@ from fastapi import FastAPI
 from app.api.routes import auth, tasks
 
 
-app = FastAPI(
-    title="Task Tracker API",
-    description="REST API for Task Tracker",
-    version="1.0.0",
-)
+def create_app() -> FastAPI:
+    app = FastAPI(
+        title="Task Tracker API",
+        description="REST API for Task Tracker",
+        version="1.0.0",
+    )
+
+    app.include_router(auth.router)
+    app.include_router(tasks.router)
+
+    return app
 
 
-app.include_router(auth.router)
-app.include_router(tasks.router)
+app = create_app()
 
 
-@app.get("/")
+@app.get("/", tags=["Root"])
 def root():
-    return {"message": "Task Tracker API działa"}
+    return {
+        "message": "Task Tracker API działa",
+    }
